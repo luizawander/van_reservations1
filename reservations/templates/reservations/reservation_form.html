@@ -15,5 +15,28 @@
         <button type="submit" class="btn btn-primary">Reservar</button>
         <a href="{% url 'logout' %}" class="btn btn-secondary">Sair</a>
     </form>
+
+    <!-- Script deve vir aqui no final -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const typeSelect = document.getElementById('id_reservation_type');
+            const goingField = document.getElementById('id_hour_going')?.closest('p');
+            const returnField = document.getElementById('id_hour_return')?.closest('p');
+
+            function toggleFields() {
+                const type = typeSelect.value;
+
+                if (goingField && returnField) {
+                    goingField.style.display = (type === 'GOING' || type === 'BOTH') ? 'block' : 'none';
+                    returnField.style.display = (type === 'RETURN' || type === 'BOTH') ? 'block' : 'none';
+                }
+            }
+
+            if (typeSelect) {
+                typeSelect.addEventListener('change', toggleFields);
+                toggleFields();  // chama uma vez ao carregar
+            }
+        });
+    </script>
 </body>
 </html>

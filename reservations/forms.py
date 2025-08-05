@@ -7,11 +7,16 @@ class UserReservationForm(forms.ModelForm):
         user = kwargs.pop('user', None)  
         super().__init__(*args, **kwargs)
 
-        from datetime import date
+        if 'user' in self.fields:
+            self.fields['user']
+
         today = date.today()
 
-        if not self.instance.pk:
-            self.fields['date'].initial = date.today()
+        if 'date' in self.fields:
+            self.fields['date'].initial = today
+
+        if not self.instance.pk and 'date' in self.fields:
+            self.fields['date'].initial = today
 
         available_going = []
         for hour in GOING_HOURS:
@@ -30,4 +35,11 @@ class UserReservationForm(forms.ModelForm):
 
     class Meta:
         model = UserReservation
-        fields = ['user', 'date', 'hour_going', 'hour_return', 'reservation_type']
+        fields = ['reservation_type', 'hour_going', 'hour_return']
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        instance.date = date.today()  # força a data como hoje
+        if commit:
+            instance.save()
+        return instance
