@@ -8,3 +8,4 @@ class UserReservationAdmin(admin.ModelAdmin):
     list_display = ('user', 'date', 'hour_going', 'hour_return', 'reservation_type', 'created_at')
     list_filter = ('date', 'reservation_type')
     search_fields = ('user__username',)
+    fields = ('user', 'date', 'hour_going', 'hour_return', 'reservation_type')
